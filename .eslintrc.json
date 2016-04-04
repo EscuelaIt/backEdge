@@ -1,0 +1,38 @@
+{
+    "rules": {
+        "no-console": [
+            0
+        ],
+        "no-undef": [
+            1
+        ],
+        "indent": [
+            1,
+            4
+        ],
+        "quotes": [
+            1,
+            "single"
+        ],
+        "linebreak-style": [
+            0,
+            "unix"
+        ],
+        "semi": [
+            1,
+            "never"
+        ]
+    },
+    "env": {
+        "es6": true,
+        "node": true
+    },
+    "parserOptions": {
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "jsx": true,
+            "experimentalObjectRestSpread": true
+        }
+    },
+    "extends": "eslint:recommended"
+}
