@@ -15,6 +15,12 @@ const middleware = require('./middleware')
 // el middleware debería crear y devolver la app configurada
 middleware.useMiddleware(app, express)
 
+// Respondemos a las peticiones mediante un mecanismo de suscripción y callbacks
+app.get('/about', (peticion, respuesta) =>  respuesta.send('Hecho con tencología Back Edge!!'))
+
+
+require('./rutas')(app)
+
 // Configuramos la aplicación para escuchar en el puerto 3000
 app.listen(3000)
 
