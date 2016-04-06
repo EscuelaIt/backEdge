@@ -35,7 +35,7 @@ module.exports = (app) => {
             peticion.params.numero1 = 0
             //siguiente(new Error('numero1 no es un número'))
             // podemos retornar directamente el error
-            respuesta.status(400).send('numero1 no es un número')
+            //respuesta.status(400).send('numero1 no es un número')
             // ... pero en ese caso hay que terminar la ejecución
             //return
         }
