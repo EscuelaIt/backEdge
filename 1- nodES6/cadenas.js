@@ -10,5 +10,5 @@ module.exports = {
     * @param {string} cadena - el texto original.
     * @return el texto, con la inicial en mayúscula y el resto minúscula 
     */
-    capitaliza: (cadena) => `${cadena[0].toUpperCase()}${cadena.slice(1).toLowerCase()}`
+    capitaliza: cadena => `${cadena[0].toUpperCase()}${cadena.slice(1).toLowerCase()}`
 }
