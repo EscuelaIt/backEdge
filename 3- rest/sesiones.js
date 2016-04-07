@@ -1,22 +1,18 @@
-var seguridad = require('./seguridad.js');
-var enrutar = function(app, ruta) {
-
+'use strict'
+const seguridad = require('./seguridad.js')
+module.exports = (app, ruta) => {
     // Gestión de sesiones: listado y login
     app.route(ruta)
         .post(function(req, res) {
-            var sesion = req.body;
+            var sesion = req.body
             if (seguridad.esUsuarioValido(sesion)) {
-                console.log('aceptado:' + sesion.email);
-                var nuevoSessionId = seguridad.nuevaSesion(sesion.email);
-                res.status(201).json(nuevoSessionId);
+                console.log(`aceptado: ${sesion.email}`)
+                var nuevoSessionId = seguridad.nuevaSesion(sesion.email)
+                res.status(201).json(nuevoSessionId)
             } else {
-                console.log('Credencial inválida:' + sesion.email);
-                res.status(401).send('Credencial inválida');
+                console.log(`Credencial inválida: ${sesion.email}`)
+                res.status(401).send('Credencial inválida')
             }
         });
 
 }
-
-
-
-module.exports = enrutar;

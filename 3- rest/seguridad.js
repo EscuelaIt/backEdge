@@ -1,8 +1,8 @@
-"use strict";
-var usuarios = [];
-var sesiones = [];
+'use strict'
+let usuarios = []
+let sesiones = []
 
-var seguridad = {
+module.exports = {
     usarSeguridad: usarSeguridad,
     existeUsuario: existeUsuario,
     crearUsuario: crearUsuario,
@@ -14,60 +14,54 @@ var seguridad = {
 
 function usarSeguridad(app, ruta) {
     app.use(ruta, function(req, res, next) {
-        var sessionId = req.get('sessionId');
-        var sesion = getSesion(sessionId);
+        var sessionId = req.get('sessionId')
+        var sesion = getSesion(sessionId)
         if (sesion) {
             if (esSesionValida(sesion)) {
-                sesion.timeStamp = new Date();
-                req.usuario = sesion.email;
-                next();
+                sesion.timeStamp = new Date()
+                req.usuario = sesion.email
+                next()
             } else {
-                console.log('Sesión caducada:' + JSON.stringify(sesion));
+                console.log(`Sesión caducada: ${JSON.stringify(sesion)}`)
                 // Sintaxis mejorada de envío de códigos de estado http
-                res.status(419).send('Sesión caducada');
+                res.status(419).send('Sesión caducada')
             }
         } else {
-            res.status(401).send('Credencial inválida');
+            res.status(401).send('Credencial inválida')
         }
     });
 }
 
 
 function existeUsuario(usuario) {
-    return usuarios.some(function(u) {
-        return u.email == usuario.email;
-    });
+    return usuarios.some(u => u.email == usuario.email)
 }
 
 function crearUsuario(usuario) {
-    usuarios.push(usuario);
+    usuarios.push(usuario)
 }
 
 function esUsuarioValido(usuario) {
-    return usuarios.filter(function(u) {
-        return u.email == usuario.email && u.password == usuario.password;
-    })[0];
+    return usuarios.filter(u => u.email == usuario.email && u.password == usuario.password)[0]
 }
 
 function getSesion(sessionId) {
-    return sesiones.filter(function(s) {
-        return s.sessionId == sessionId;
-    })[0]
+    return sesiones.filter(s => s.sessionId == sessionId)[0]
 }
 
 function esSesionValida(sesion) {
-    return (new Date() - sesion.timeStamp) < 20 * 60 * 1000;
+    return (new Date() - sesion.timeStamp) < 20 * 60 * 1000
 }
 
 function nuevaSesion(email) {
-    var sessionId = Math.random() * (88888) + 11111;
-    var timeStamp = new Date();
+    var sessionId = Math.random() * (88888) + 11111
+    var timeStamp = new Date()
     sesiones.push({
         sessionId: sessionId,
         email: email,
         timeStamp: timeStamp
-    });
-    return sessionId;
+    })
+    return sessionId
 }
 
-module.exports = seguridad;
+
