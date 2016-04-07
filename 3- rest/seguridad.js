@@ -13,9 +13,9 @@ module.exports = {
 }
 
 function usarSeguridad(app, ruta) {
-    app.use(ruta, function(req, res, next) {
-        var sessionId = req.get('sessionId')
-        var sesion = getSesion(sessionId)
+    app.use(ruta, (req, res, next) => {
+        let sessionId = req.get('sessionId')
+        let sesion = getSesion(sessionId)
         if (sesion) {
             if (esSesionValida(sesion)) {
                 sesion.timeStamp = new Date()
@@ -54,8 +54,8 @@ function esSesionValida(sesion) {
 }
 
 function nuevaSesion(email) {
-    var sessionId = Math.random() * (88888) + 11111
-    var timeStamp = new Date()
+    let sessionId = Math.random() * (88888) + 11111
+    let timeStamp = new Date()
     sesiones.push({
         sessionId: sessionId,
         email: email,
