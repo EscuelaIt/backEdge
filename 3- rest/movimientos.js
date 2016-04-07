@@ -25,7 +25,7 @@ var enrutar = function(app, ruta) {
 
     // si la ruta es simple, se puede mantener el verbo original
     // Manteniendo la Precedencia
-    app.get(ruta + '/totales', function(peticion, respuesta) {
+    app.get(ruta + '/saldos', function(peticion, respuesta) {
         var totales = {
             ingresos: 0,
             gastos: 0,

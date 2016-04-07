@@ -1,0 +1,51 @@
+#%RAML 1.0 Library
+resourceTypes:
+  Collection:
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              type: <<item>>[]
+        204:
+        403:
+    post:
+      body:
+        application/json:
+          type: <<item>>
+      responses:
+        201:
+        400:
+        403:
+        409:
+  Member:
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              type: <<item>>
+        403:
+        404:
+    put:
+      body:
+        application/json:
+          type: <<item>>
+      responses:
+        200:
+        403:
+        404:
+    delete:
+      responses:
+        204:
+        403:
+        404:
+  CollectionReadOnly:
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              type: <<item>>[]
+        204:
+        403:
