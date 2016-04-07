@@ -63,8 +63,10 @@ promesas.descargando('unrutaquenoexiste.es')
     .catch(reason => console.error(reason))
 
 
-// el proceso
+// El Proceso
 process.title = 'mi super aplicación back edge'
+
+//en node todo ocurre en paralelo excepto tu código
 
 imprimir()
 

@@ -1,24 +1,15 @@
 {
-  "name": "back-edge",
+  "name": "escuela-it",
   "version": "1.0.0",
-  "description": "Back End con JS ES6",
+  "description": "curso de nodejs",
   "main": "index.js",
+  "dependencies": {
+    "express": "^4.13.4"
+  },
+  "devDependencies": {},
   "scripts": {
-    "test": "mocha"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/EscuelaIt/backEdge.git"
-  },
-  "keywords": [
-    "NodeJS",
-    "Express",
-    "ES6"
-  ],
-  "author": "Alberto Basalo",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/EscuelaIt/backEdge/issues"
-  },
-  "homepage": "https://github.com/EscuelaIt/backEdge#readme"
+  "author": "@albertobasalo",
+  "license": "ISC"
 }

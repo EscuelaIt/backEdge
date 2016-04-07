@@ -1,17 +1,18 @@
 'use strict'
 // Se requiere la presencia del módulo de express
 // previamente instalado usando
-// npm install express -save
+// npm install express --save
 const express = require('express')
 
 // Es frecuente llamar app a la instancia de express
 const app = express()
 
 // Respondemos a las peticiones mediante un mecanismo de suscripción y callbacks
-app.get('/', (peticion, respuesta) =>  respuesta.send('Hola Express6!'))
+app.get('/', (peticion, respuesta) =>  respuesta.send('Hola ExprEsS6!'))
 
 // configuración de lógica intermedia
 const middleware = require('./middleware')
+
 // el middleware debería crear y devolver la app configurada
 middleware.useMiddleware(app, express)
 

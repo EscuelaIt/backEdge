@@ -8,6 +8,7 @@ const tools = require('../tools')
 describe('matemáticas', () => {
     describe('cuadrado', () => {
         it('should return 4 when the value is 2', () => assert.equal(4, tools.matematicas.cuadrado(2)))
+        it('should return 9 when the value is 3', () => assert.equal(9, tools.matematicas.cuadrado(3)))
     })
     describe('diagonal', () => {
         it('should return 5 when the values are 3 and 4', () => assert.equal(5, tools.matematicas.diagonal(3, 4)))

@@ -14,9 +14,10 @@ module.exports.useMiddleware = (app, express) => {
         maxAge: '1d',
         setHeaders: res => res.set('x-timestamp', Date.now())
     }
+
     // Un uso muy frecuente es reservar una serie de rutas para derivarlas al disco
     // Tendremos así un directorio para contenido estático
-    app.use(express.static(__dirname + '/static', options))
+    app.use(express.static(__dirname + '/estatico', options))
 
     // Otro uso común es la monitorización de la aplicación
     // Interceptor de llamadas
@@ -26,7 +27,7 @@ module.exports.useMiddleware = (app, express) => {
         siguiente()
         // En caso de no hacerlo, se colgaría la llamada
     })
-
+    
 }
 
 

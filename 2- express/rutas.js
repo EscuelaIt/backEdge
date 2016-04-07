@@ -2,12 +2,12 @@ module.exports = (app) => {
     const matematicas = require('./matematicas')
     // La peticiones suelen enviar parámetros
     // se declaran precedidos de :
-    app.get('/saludame/:tunombre', function(peticion, respuesta) {
+    app.get('/saludame/:nombre', function(peticion, respuesta) {
         // se recuperan en la coleccción params de la petición
-        respuesta.send('Hola ' + peticion.params.tunombre)
+        respuesta.send('Hola ' + peticion.params.nombre)
     })
 
-    app.get('/sayhello/:tunombre', (req, res) => res.send(`Hello ${req.params.tunombre}`) )    
+    app.get('/sayhello/:name', (req, res) => res.send(`Hello ${req.params.name}`) )    
 
     // Las expresiones de las rutas puede ser complejas
     // Express determinará la función que mejor encaja con una ruta determinada
@@ -30,14 +30,14 @@ module.exports = (app) => {
     app.param('numero1', (peticion, respuesta, siguiente, valor) => {
         console.log(`numero1 vale  ${valor}`)
         if (isNaN(valor)) {
-            console.log('numero1 no es un número ');
+            console.log('numero1 no es un número !!!! ')
             // podemos hacer distintas acciones correctoras o preventivas
-            peticion.params.numero1 = 0
+            //peticion.params.numero1 = 0
             //siguiente(new Error('numero1 no es un número'))
             // podemos retornar directamente el error
-            //respuesta.status(400).send('numero1 no es un número')
+            respuesta.status(400).send('numero1 no es un número')
             // ... pero en ese caso hay que terminar la ejecución
-            //return
+            return
         }
         siguiente()
     })
