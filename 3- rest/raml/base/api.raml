@@ -2,7 +2,7 @@
 title: Cash Flow
 version: v1
 baseUri: http://localhost:3000/api/
-protocols: [ HTTPS ]
+protocols: [ HTTP, HTTPS ]
 mediaType: application/json
 
 uses:
@@ -12,19 +12,19 @@ uses:
   movimientos: !include movimiento.raml
 
 /usuarios:
-    type: {base.Collection: {item : users.User} }
-    /{id}:
-        type:  { base.Member: {item : users.User} }
-/sesiones:
-  type: {base.Collection: {item : sessions.Session} }
+  type: {base.Collection: {item : users.User} }
+  /{id}:
+    type:  { base.Member: {item : users.User} }
+  /sesiones:
+    type: {base.Collection: {item : sessions.Session} }
 
 /movimientos:
   type: {base.Collection: {item : movimientos.Movimiento} }
-  get:
   /{id}:
-      type:  { base.Member: {item : movimientos.Movimiento} }
+    type:  { base.Member: {item : movimientos.Movimiento} }
   /saldos:
     type:  { base.CollectionReadOnly: {item : saldos.Saldo} }
 
 /maestros:
-  get:
+  type: {base.CollectionReadOnly {item : movimientos.Movimiento} }
+  
