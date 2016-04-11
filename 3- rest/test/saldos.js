@@ -1,6 +1,7 @@
 'use strict'
 const url = '/api/priv/saldos'
 const urlS = '/api/pub/sesiones'
+const urlM = '/api/priv/movimientos'
 let sessionId
 module.exports.test = (req) => {
     describe(url, () => {
@@ -21,7 +22,7 @@ module.exports.test = (req) => {
                 .set('sessionId', sessionId)
                 .expect(200, done)
         })
-        it('GET respond with a correct json value', (done) => {
+        it('GET respond with a correct cero json value', (done) => {
             req
                 .get(url)
                 .set('sessionId', sessionId)
@@ -30,6 +31,22 @@ module.exports.test = (req) => {
                     gastos: 0,
                     balance: 0
                 }, done)
+        })
+        it('GET respond with a correct non cero json value', (done) => {
+            req
+                .post(urlM)
+                .send({ esIngreso: 1, importe: 199, fecha: new Date() })
+                .set('sessionId', sessionId)
+                .end(() => {
+                    req
+                        .get(url)
+                        .set('sessionId', sessionId)
+                        .expect({
+                            ingresos: 199,
+                            gastos: 0,
+                            balance: 199
+                        }, done)
+                })
         })
     })
 }
