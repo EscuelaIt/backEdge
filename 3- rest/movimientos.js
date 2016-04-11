@@ -1,10 +1,10 @@
 'use strict'
 let movimientos = []
-module.exports = (app, ruta) => {
+module.exports = (app, rutaMovimientos, rutaSaldos) => {
     // Tendremos dos mega-rutas por recurso
 
     // una para ir a la colección
-    app.route(ruta)
+    app.route(rutaMovimientos)
         .get((peticion, respuesta) => {
             // filtro para el usuario actual
             let movimientosUsuario = movimientos.filter(m => m.usuario == peticion.usuario)
@@ -24,7 +24,7 @@ module.exports = (app, ruta) => {
 
 
     // otra a nivel de elemento
-    app.route(ruta + '/:id')
+    app.route(`${rutaMovimientos}/:id`)
         .get((peticion, respuesta) => {
             let movimientosUsuario = getMovimientoUsuario(peticion.params.id, peticion.usuario);
             if (movimientosUsuario && movimientosUsuario.length > 0)
@@ -51,7 +51,7 @@ module.exports = (app, ruta) => {
 
     // si la ruta es simple, se puede mantener el verbo original
     // Manteniendo la Precedencia
-    app.get(ruta + '/saldos', (peticion, respuesta) => {
+    app.get(rutaSaldos, (peticion, respuesta) => {
         let totales = {
             ingresos: 0,
             gastos: 0,

@@ -8,5 +8,5 @@ module.exports = (app) => {
     usuarios(app, '/api/pub/usuarios')
     sesiones(app, '/api/pub/sesiones')
     maestros(app, '/api/pub/maestros')
-    movimientos(app, '/api/priv/movimientos')
+    movimientos(app, '/api/priv/movimientos','/api/priv/saldos')
 }
