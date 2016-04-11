@@ -4,6 +4,7 @@ module.exports = (app, rutaMovimientos, rutaSaldos) => {
     // Tendremos dos mega-rutas por recurso
 
     // una para ir a la colección
+    // api/priv/movimientos
     app.route(rutaMovimientos)
         .get((peticion, respuesta) => {
             // filtro para el usuario actual
@@ -24,18 +25,19 @@ module.exports = (app, rutaMovimientos, rutaSaldos) => {
 
 
     // otra a nivel de elemento
+    // // api/priv/movimientos/159
     app.route(`${rutaMovimientos}/:id`)
         .get((peticion, respuesta) => {
-            let movimientosUsuario = getMovimientoUsuario(peticion.params.id, peticion.usuario);
+            let movimientosUsuario = getMovimientoUsuario(peticion.params.id, peticion.usuario)
             if (movimientosUsuario && movimientosUsuario.length > 0)
                 respuesta.json(movimientosUsuario[0])
             else
                 respuesta.status(404).send()
         }).put((peticion, respuesta) => {
-            let movimientosUsuario = getMovimientoUsuario(peticion.params.id, peticion.usuario);
+            let movimientosUsuario = getMovimientoUsuario(peticion.params.id, peticion.usuario)
             if (movimientosUsuario && movimientosUsuario.length > 0) {
                 movimientosUsuario[0] = peticion.body
-                respuesta.json(1)
+                respuesta.json(movimientosUsuario[0])
             } else {
                 respuesta.status(404).send()
             }
@@ -51,6 +53,7 @@ module.exports = (app, rutaMovimientos, rutaSaldos) => {
 
     // si la ruta es simple, se puede mantener el verbo original
     // Manteniendo la Precedencia
+    // api/priv/saldos
     app.get(rutaSaldos, (peticion, respuesta) => {
         let totales = {
             ingresos: 0,

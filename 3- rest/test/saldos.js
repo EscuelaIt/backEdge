@@ -15,7 +15,8 @@ module.exports.test = (req) => {
                     return done()
                 })
         })
-        it('GET respond with 401 unauthorized to non authenticated users', (done) => req.get(url).expect(401, done))
+        it('GET respond with 401 unauthorized to non authenticated users',
+            (done) => req.get(url).expect(401, done))
         it('GET respond with 200 ok to an authenticated user', (done) => {
             req
                 .get(url)

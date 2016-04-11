@@ -29,7 +29,7 @@ function usarSeguridad(app, ruta) {
         } else {
             res.status(401).send('Credencial inválida')
         }
-    });
+    })
 }
 
 

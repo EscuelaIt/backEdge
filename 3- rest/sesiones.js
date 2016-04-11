@@ -12,6 +12,7 @@ module.exports = (app, ruta) => {
             } else {
                 console.log(`Credencial inválida: ${sesion.email}`)
                 res.status(401).send('Credencial inválida')
+                res.send()
             }
         })
 

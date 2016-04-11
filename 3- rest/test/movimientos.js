@@ -9,18 +9,23 @@ module.exports.test = (req) => {
                 .post(urlS)
                 .send({ email: 'a@b.c', password: '1234' })
                 .end((err, res) => {
-                    if(err) return done(err)
+                    if (err) return done(err)
                     sessionId = res.body
                     return done()
                 })
         })
-        it('GET respond with 401 unauthorized to non authenticated users', (done) => req.get(url).expect(401, done))
-        it('GET respond with 204 no content to a new authenticated user', (done) => {
-            req
-                .get(url)
-                .set('sessionId', sessionId)
-                .expect(204, done)
-        })
+        it('GET respond with 401 unauthorized to non authenticated users',
+            (done) =>
+                req
+                    .get(url)
+                    .expect(401, done))
+        it('GET respond with 204 no content to a new authenticated user',
+            (done) => {
+                req
+                    .get(url)
+                    .set('sessionId', sessionId)
+                    .expect(204, done)
+            })
         it('POST respond with 201 created to a new movimiento by authenticated user', (done) => {
             req
                 .post(url)
@@ -72,5 +77,12 @@ module.exports.test = (req) => {
                 .set('sessionId', sessionId)
                 .expect(404, done)
         })
+        it('GET respond with 204 no content to a new authenticated user',
+            (done) => {
+                req
+                    .get(url)
+                    .set('sessionId', sessionId)
+                    .expect(204, done)
+            })
     })
 }
