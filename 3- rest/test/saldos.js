@@ -9,7 +9,7 @@ module.exports.test = (req) => {
                 .post(urlS)
                 .send({ email: 'a@b.c', password: '1234' })
                 .end((err, res) => {
-                    if(err) return done(err)
+                    if (err) return done(err)
                     sessionId = res.body
                     return done()
                 })
@@ -20,6 +20,16 @@ module.exports.test = (req) => {
                 .get(url)
                 .set('sessionId', sessionId)
                 .expect(200, done)
+        })
+        it('GET respond with a correct json value', (done) => {
+            req
+                .get(url)
+                .set('sessionId', sessionId)
+                .expect({
+                    ingresos: 0,
+                    gastos: 0,
+                    balance: 0
+                }, done)
         })
     })
 }
