@@ -1,12 +1,16 @@
 {
-	"name": "rest",
-	"version": "1.0.0",
-	"description": "",
-	"main": "index.js",
-	"author": "@albertobasalo",
-	"license": "ISC",
-	"dependencies": {
-		"body-parser": "^1.15.0",
-		"express": "^4.13.4"
-	}
+  "name": "rest",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "author": "@albertobasalo",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.15.0",
+    "express": "^4.13.4"
+  },
+  "devDependencies": {
+    "mocha": "^2.4.5",
+    "supertest": "^1.2.0"
+  }
 }
