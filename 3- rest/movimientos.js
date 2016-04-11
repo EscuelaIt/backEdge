@@ -12,13 +12,41 @@ module.exports = (app, ruta) => {
                 respuesta.json(movimientosUsuario)
             else
                 respuesta.status(204).send()
-        }).post((peticion, respuesta) =>{
+        }).post((peticion, respuesta) => {
             let nuevoMovimiento = peticion.body
             nuevoMovimiento.id = movimientos.length
             // firma del movimiento en el servidor
             nuevoMovimiento.usuario = peticion.usuario
             movimientos.push(nuevoMovimiento)
             respuesta.status(201).json(nuevoMovimiento)
+        })
+
+
+
+    // otra a nivel de elemento
+    app.route(ruta + '/:id')
+        .get((peticion, respuesta) => {
+            let movimientosUsuario = getMovimientoUsuario(peticion.params.id, peticion.usuario);
+            if (movimientosUsuario && movimientosUsuario.length > 0)
+                respuesta.json(movimientosUsuario[0])
+            else
+                respuesta.status(404).send()
+        }).put((peticion, respuesta) => {
+            let movimientosUsuario = getMovimientoUsuario(peticion.params.id, peticion.usuario);
+            if (movimientosUsuario && movimientosUsuario.length > 0) {
+                movimientosUsuario[0] = peticion.body
+                respuesta.json(1)
+            } else {
+                respuesta.status(404).send()
+            }
+        }).delete((peticion, respuesta) => {
+            let movimientosUsuario = getMovimientoUsuario(peticion.params.id, peticion.usuario)
+            if (movimientosUsuario && movimientosUsuario.length > 0) {
+                movimientos.splice(peticion.params.id, 1)
+                respuesta.status(204).send()
+            } else {
+                respuesta.status(404).send()
+            }
         })
 
     // si la ruta es simple, se puede mantener el verbo original
@@ -49,32 +77,6 @@ module.exports = (app, ruta) => {
             })
         }
     })
-
-    // otra a nivel de elemento
-    app.route(ruta + '/:id')
-        .get((peticion, respuesta) =>{
-            let movimientosUsuario = getMovimientoUsuario(peticion.params.id, peticion.usuario);
-            if (movimientosUsuario && movimientosUsuario.length > 0)
-                respuesta.json(movimientosUsuario[0])
-            else
-                respuesta.status(404).send()
-        }).put((peticion, respuesta) => {
-            let movimientosUsuario = getMovimientoUsuario(peticion.params.id, peticion.usuario);
-            if (movimientosUsuario && movimientosUsuario.length > 0) {
-                movimientosUsuario[0] = peticion.body
-                respuesta.json(1)
-            } else {
-                respuesta.status(404).send(0)
-            }
-        }).delete((peticion, respuesta) =>{
-            let movimientosUsuario = getMovimientoUsuario(peticion.params.id, peticion.usuario)
-            if (movimientosUsuario && movimientosUsuario.length > 0) {
-                movimientos.splice(peticion.params.id, 1)
-                respuesta.status(204).send(1)
-            } else {
-                respuesta.status(404).send(0)
-            }
-        })
 
     function getMovimientoUsuario(id, usuario) {
         return movimientos.filter(m => m.usuario == usuario && m.id == id)
