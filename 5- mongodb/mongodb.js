@@ -1,6 +1,6 @@
 'use strict'
 const client = require('mongodb').MongoClient
-
+const ObjectID = require('mongodb').ObjectID
 const url = 'mongodb://localhost:27017/backedge'
 
 
@@ -10,9 +10,9 @@ module.exports = {
     collectionConnectingXtrem: colName => new Promise((resolve, reject) => client.connect(url, (err, db) => err ? reject(err) : resolve(db.collection(colName)))),
     finding: finding,
     findingXtrem: {},
-    inserting:inserting,
+    inserting: inserting,
     updating: updating,
-    deleting:deleting
+    deleting: deleting
 }
 
 
@@ -29,8 +29,9 @@ function collectionConnecting(colName) {
     })
 }
 
-function finding(colName, query) {
+function finding(colName,query, id) {
     return new Promise((resolve, reject) => {
+        if(id)query._id = new ObjectID(id)
         this.collectionConnecting(colName)
             .then(colDb => colDb.find(query).toArray((err, result) => err ? reject(err) : resolve(result)))
             .catch(err => reject(err))
@@ -40,23 +41,25 @@ function finding(colName, query) {
 function inserting(colName, document) {
     return new Promise((resolve, reject) => {
         this.collectionConnecting(colName)
-            .then(colDb => colDb.insert(document), (err, result) => err ? reject(err) : resolve(result))
+            .then(colDb => colDb.insert(document, (err, result) => err ? reject(err) : resolve(result)))
             .catch(err => reject(err))
     })
 }
 
-function updating(colName, query, document) {
+function updating(colName, query, id, document) {
     return new Promise((resolve, reject) => {
+        if(id) query._id = new ObjectID(id)
         this.collectionConnecting(colName)
-            .then(colDb => colDb.update(query,document,(err, result) => err ? reject(err) : resolve(result)))
+            .then(colDb => colDb.update(query, document, (err, result) => err ? reject(err) : resolve(result)))
             .catch(err => reject(err))
     })
 }
 
-function deleting(colName, query) {
+function deleting(colName,query, id) {
     return new Promise((resolve, reject) => {
+        if(id)query._id = new ObjectID(id)
         this.collectionConnecting(colName)
-            .then(colDb => colDb.deleteOne(query,(err, result) => err ? reject(err) : resolve(result)))
+            .then(colDb => colDb.deleteOne(query, (err, result) => err ? reject(err) : resolve(result)))
             .catch(err => reject(err))
     })
 }

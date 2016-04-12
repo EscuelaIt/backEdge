@@ -1,5 +1,6 @@
 'use strict'
 let usuarios = []
+
 let sesiones = []
 
 module.exports = {

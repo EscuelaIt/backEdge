@@ -1,25 +1,27 @@
 'use strict'
 let movimientos = []
+const mongodb = require('./mongodb')
+const colName = 'movimientos'
+
 module.exports = (app, rutaMovimientos, rutaSaldos) => {
     // Tendremos dos mega-rutas por recurso
-
+    let resError = (err, res) => {
+        console.error(err)
+        res.status(500).send(err)
+    }
     // una para ir a la colección
     // api/priv/movimientos
     app.route(rutaMovimientos)
-        .get((peticion, respuesta) => {
-            // filtro para el usuario actual
-            let movimientosUsuario = movimientos.filter(m => m.usuario == peticion.usuario)
-            if (movimientosUsuario && movimientosUsuario.length > 0)
-                respuesta.json(movimientosUsuario)
-            else
-                respuesta.status(204).send()
-        }).post((peticion, respuesta) => {
-            let nuevoMovimiento = peticion.body
-            nuevoMovimiento.id = movimientos.length
-            // firma del movimiento en el servidor
-            nuevoMovimiento.usuario = peticion.usuario
-            movimientos.push(nuevoMovimiento)
-            respuesta.status(201).json(nuevoMovimiento)
+        .get((req, res) => {
+            mongodb.finding(colName, { usuario: req.usuario })
+                .then(result => result.length > 0 ? res.json(result) : res.status(204).send())
+                .catch(err => resError(err, res))
+        }).post((req, res) => {
+            let nuevoMovimiento = req.body
+            nuevoMovimiento.usuario = req.usuario
+            mongodb.inserting(colName, nuevoMovimiento)
+                .then(result => res.status(201).json(result.ops[0]))
+                .catch(err => resError(err, res))
         })
 
 
@@ -27,28 +29,19 @@ module.exports = (app, rutaMovimientos, rutaSaldos) => {
     // otra a nivel de elemento
     // // api/priv/movimientos/159
     app.route(`${rutaMovimientos}/:id`)
-        .get((peticion, respuesta) => {
-            let movimientosUsuario = getMovimientoUsuario(peticion.params.id, peticion.usuario)
-            if (movimientosUsuario && movimientosUsuario.length > 0)
-                respuesta.json(movimientosUsuario[0])
-            else
-                respuesta.status(404).send()
-        }).put((peticion, respuesta) => {
-            let movimientosUsuario = getMovimientoUsuario(peticion.params.id, peticion.usuario)
-            if (movimientosUsuario && movimientosUsuario.length > 0) {
-                movimientosUsuario[0] = peticion.body
-                respuesta.json(movimientosUsuario[0])
-            } else {
-                respuesta.status(404).send()
-            }
-        }).delete((peticion, respuesta) => {
-            let movimientosUsuario = getMovimientoUsuario(peticion.params.id, peticion.usuario)
-            if (movimientosUsuario && movimientosUsuario.length > 0) {
-                movimientos.splice(peticion.params.id, 1)
-                respuesta.status(204).send()
-            } else {
-                respuesta.status(404).send()
-            }
+        .get((req, res) => {
+            mongodb.finding(colName, { usuario: req.usuario }, req.params.id)
+                .then(result => result.length>0 ? res.json(result) : res.status(404).send())
+                .catch(err => resError(err, res))
+        }).put((req, res) => {
+            mongodb.updating(colName, { usuario: req.usuario }, req.params.id, req.body)
+                .then(result => result.result.n > 0 ? res.status(200).json(result) : res.status(404).send() )
+                .catch(err => resError(err, res))
+
+        }).delete((req, res) => {
+            mongodb.deleting(colName, { usuario: req.usuario }, req.params.id)
+                .then(result => res.status(204).json(result))
+                .catch(err => resError(err, res))
         })
 
     // si la ruta es simple, se puede mantener el verbo original
