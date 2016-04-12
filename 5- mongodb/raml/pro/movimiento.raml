@@ -1,0 +1,17 @@
+#%RAML 1.0 Library
+types:
+  Movimiento:
+    properties:
+      _id?: string
+      tipo: string
+      categoria?: string
+      fecha: string
+      importe: number
+      factura: string
+    example:
+      _id: string
+      tipo: ingreso
+      categoria: ventas
+      fecha: 2016-03-21
+      importe: 123,45
+      factura: 16A015

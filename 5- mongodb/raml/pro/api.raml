@@ -1,0 +1,48 @@
+#%RAML 1.0
+title: Cash Flow
+version: v1
+baseUri: http://localhost:3000/api/
+protocols: [ HTTPS ]
+mediaType: application/json
+
+uses:
+  auth: !include auth.raml
+  aspectos: !include aspectos.raml
+  base: !include restbase.raml
+  users: !include user.raml
+  sessions: !include session.raml
+  facturas: !include factura.raml
+  movimientos: !include movimiento.raml
+  saldos: !include saldo.raml
+
+/users:
+    type: {base.Collection: {item : users.User} }
+    /{id}:
+        type:  { base.Member: {item : users.User} }
+/sessions:
+  type: {base.Collection: {item : sessions.Session} }
+
+/movimientos:
+  type: {base.Collection: {item : movimientos.Movimiento} }
+  get:
+    is: [aspectos.FiltrableEntreFechas, aspectos.FiltrableEntreImportes]
+  /{id}:
+      type:  { base.Member: {item : movimientos.Movimiento} }
+
+/facturas:
+  type: {base.Collection: {item : facturas.Factura} }
+  get:
+    is: [aspectos.FiltrableEntreFechas, aspectos.FiltrableEntreImportes]
+  /{id}:
+      type:  { base.Member: {item : facturas.Factura} }
+      /movimientos:
+        type: {base.Collection: {item : movimientos.Movimiento} }
+        get:
+          is: [aspectos.FiltrableEntreFechas, aspectos.FiltrableEntreImportes]
+        /{id}:
+            type:  { base.Member: {item : movimientos.Movimiento} }
+
+/saldos:
+  type:  { base.CollectionReadOnly: {item : saldos.Saldo} }
+  get:
+    is: [aspectos.FiltrableEntreFechas]
