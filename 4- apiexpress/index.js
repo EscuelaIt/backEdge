@@ -7,5 +7,5 @@ middleware.useMiddleware(app, express)
 
 require('./rutas')(app)
 
-app.listen(3030)
-console.log('listening on port 3030')
+app.listen(3000)
+console.log('listening on port 3000')

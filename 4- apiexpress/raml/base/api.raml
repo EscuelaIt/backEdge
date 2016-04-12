@@ -1,0 +1,30 @@
+#%RAML 1.0
+title: Cash Flow
+version: v1
+baseUri: http://localhost:3000/api/
+protocols: [ HTTP, HTTPS ]
+mediaType: application/json
+
+uses:
+  base: !include restbase.raml
+  users: !include user.raml
+  sessions: !include session.raml
+  movimientos: !include movimiento.raml
+
+/usuarios:
+  type: {base.Collection: {item : users.User} }
+  /{id}:
+    type:  { base.Member: {item : users.User} }
+  /sesiones:
+    type: {base.Collection: {item : sessions.Session} }
+
+/movimientos:
+  type: {base.Collection: {item : movimientos.Movimiento} }
+  /{id}:
+    type:  { base.Member: {item : movimientos.Movimiento} }
+  /saldos:
+    type:  { base.CollectionReadOnly: {item : saldos.Saldo} }
+
+/maestros:
+  type: {base.CollectionReadOnly {item : movimientos.Movimiento} }
+  

@@ -1,0 +1,16 @@
+#%RAML 1.0 Library
+securitySchemes:
+  basicAuth:
+    description: Cada petición debe contener una cabecera de autenticación
+    type: Basic Authentication
+    describedBy:
+      headers:
+        x-access-token:
+          description: Token de acceso tipo JWT
+          type: string
+      responses:
+        401:
+          description: |
+            No autorizado. El token no es válido.
+            
+
