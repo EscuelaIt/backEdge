@@ -1,5 +1,6 @@
 'use strict'
-let usuarios = []
+const mongodb = require('./mongodb')
+const colName = 'usuarios'
 
 let sesiones = []
 
@@ -24,7 +25,6 @@ function usarSeguridad(app, ruta) {
                 next()
             } else {
                 console.log(`Sesión caducada: ${JSON.stringify(sesion)}`)
-                // Sintaxis mejorada de envío de códigos de estado http
                 res.status(419).send('Sesión caducada')
             }
         } else {
@@ -35,15 +35,15 @@ function usarSeguridad(app, ruta) {
 
 
 function existeUsuario(usuario) {
-    return usuarios.some(u => u.email == usuario.email)
+    return mongodb.finding(colName, { email: usuario.email })
 }
 
 function crearUsuario(usuario) {
-    usuarios.push(usuario)
+    return mongodb.inserting(colName, usuario)
 }
 
 function esUsuarioValido(usuario) {
-    return usuarios.filter(u => u.email == usuario.email && u.password == usuario.password)[0]
+    return mongodb.finding(colName, { email: usuario.email, password:usuario.password  })
 }
 
 function getSesion(sessionId) {
