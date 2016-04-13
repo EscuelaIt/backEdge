@@ -1,7 +1,7 @@
 'use strict'
 const seguridad = require('./seguridad.js')
 module.exports = (app, ruta) => {
-    // Gestión de sesiones: listado y login
+    // Gestión de sesiones:  login
     app.route(ruta)
         .post((req, res) => {
             let sesion = req.body

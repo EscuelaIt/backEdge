@@ -1,7 +1,7 @@
 'use strict'
 const seguridad = require('./seguridad.js')
 module.exports = (app, ruta) => {
-    // Gestión de sesiones: listado y login
+    // Gestión de usuarios:  registro
     app.route(ruta)
         .post((req, res) => {
             let usuario = req.body
@@ -15,7 +15,7 @@ module.exports = (app, ruta) => {
                         console.log(`ok registrando: ${usuario.email}`)
                         seguridad.crearUsuario(usuario)
                             .then(() => {
-                                let nuevoSessionId = seguridad.nuevaSesion(usuario.email)
+                                let nuevoSessionId = seguridad.nuevaSesion(usuario)
                                 res.status(201).json(nuevoSessionId)
                             })
                     }

@@ -1,14 +1,10 @@
 'use strict'
-let movimientos = []
 const mongodb = require('./mongodb')
 const colName = 'movimientos'
 
 module.exports = (app, rutaMovimientos, rutaSaldos) => {
+       
     // Tendremos dos mega-rutas por recurso
-    let resError = (err, res) => {
-        console.error(err)
-        res.status(500).send(err)
-    }
     // una para ir a la colección
     // api/priv/movimientos
     app.route(rutaMovimientos)
@@ -70,4 +66,10 @@ module.exports = (app, rutaMovimientos, rutaSaldos) => {
             .then(result => result.length > 0 ? res.json(result) : res.status(204).send())
             .catch(err => resError(err, res))
     })
+
+    /** Respuesta común a errores */    
+    var resError = (err, res) => {
+        console.error(err)
+        res.status(500).send(err)
+    }    
 }
