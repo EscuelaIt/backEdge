@@ -1,33 +1,32 @@
 'use strict'
 const mongodb = require('./mongodb')
 const colName = 'usuarios'
-
-let sesiones = []
+const jwt = require('./jwt')
 
 module.exports = {
     usarSeguridad: usarSeguridad,
     existeUsuario: existeUsuario,
     crearUsuario: crearUsuario,
     esUsuarioValido: esUsuarioValido,
-    esSesionValida: esSesionValida,
-    getSesion: getSesion,
-    nuevaSesion: nuevaSesion
+    nuevaSesion: (usuario) => jwt.generaToken(usuario)
 }
 
 function usarSeguridad(app, ruta) {
     app.use(ruta, (req, res, next) => {
         let sessionId = req.get('sessionId')
-        let sesion = getSesion(sessionId)
-        if (sesion) {
-            if (esSesionValida(sesion)) {
+        if(sessionId === undefined) return res.status(401).send('Credencial inválida')
+        try {
+            let sesion = jwt.verify(sessionId)
+            if (sesion) {
                 sesion.timeStamp = new Date()
                 req.usuario = sesion.email
                 next()
             } else {
-                console.log(`Sesión caducada: ${JSON.stringify(sesion)}`)
-                res.status(419).send('Sesión caducada')
+                res.status(401).send('Credencial inválida')
             }
-        } else {
+        }
+        catch (err) {
+            console.error(err)
             res.status(401).send('Credencial inválida')
         }
     })
@@ -43,26 +42,9 @@ function crearUsuario(usuario) {
 }
 
 function esUsuarioValido(usuario) {
-    return mongodb.finding(colName, { email: usuario.email, password:usuario.password  })
+    return mongodb.finding(colName, { email: usuario.email, password: usuario.password })
 }
 
-function getSesion(sessionId) {
-    return sesiones.filter(s => s.sessionId == sessionId)[0]
-}
 
-function esSesionValida(sesion) {
-    return (new Date() - sesion.timeStamp) < 20 * 60 * 1000
-}
-
-function nuevaSesion(email) {
-    let sessionId = Math.random() * (88888) + 11111
-    let timeStamp = new Date()
-    sesiones.push({
-        sessionId: sessionId,
-        email: email,
-        timeStamp: timeStamp
-    })
-    return sessionId
-}
 
 

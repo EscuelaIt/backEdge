@@ -9,7 +9,7 @@ module.exports = (app, ruta) => {
                 .then(result => {
                     if (result.length > 0) {
                         console.log(`aceptado: ${sesion.email}`)
-                        let nuevoSessionId = seguridad.nuevaSesion(sesion.email)
+                        let nuevoSessionId = seguridad.nuevaSesion(sesion)
                         res.status(201).json(nuevoSessionId)
                     } else {
                         console.log(`Credencial inválida: ${sesion.email}`)
