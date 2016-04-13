@@ -6,14 +6,14 @@ use control_caja
 db.movimientos.drop()
 db.createCollection('movimientos')
 
-//var movimiento = {
-//	user: 'albertobasalo@agorabinaria.com',
-//	tipo: 'Ingreso',
-//	categoria: 'Nómina',
-//	importe: 1200,
-//	fecha: new Date(2015, 03, 06, 12, 00, 00, 000)
-//};
-//db.movimientos.insert(movimiento);
+var movimiento = {
+    user: 'albertobasalo@agorabinaria.com',
+	tipo: 'Ingreso',
+	categoria: 'Nómina',
+	importe: 1200,
+	fecha: new Date(2015, 03, 06, 12, 00, 00, 000)
+};
+db.movimientos.insert(movimiento);
 
 var nomina_alberto = {
 	user: 'albertobasalo@agorabinaria.com',

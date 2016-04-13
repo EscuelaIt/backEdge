@@ -26,7 +26,7 @@ module.exports = (app, rutaMovimientos, rutaSaldos) => {
     // // api/priv/movimientos/159
     app.route(`${rutaMovimientos}/:id`)
         .get((req, res) => {
-            mongodb.finding(colName, { usuario: req.usuario }, req.params.id)
+            mongodb.finding(colName, { usuario: req.usuario}, req.params.id)
                 .then(result => result.length > 0 ? res.json(result) : res.status(404).send())
                 .catch(err => resError(err, res))
         }).put((req, res) => {
@@ -50,7 +50,8 @@ module.exports = (app, rutaMovimientos, rutaSaldos) => {
                 $match: {
                     usuario: req.usuario
                 }
-            },
+            }
+            ,
             {
                 $group: {
                     _id: {

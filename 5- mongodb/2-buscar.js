@@ -17,11 +17,14 @@ var grandes_movimientos = db.movimientos.find({
 });
 
 var alberto_or_grandes_movimientos = db.movimientos.find({
-	$or: [{
+    $or: [
+        {
 			importe: {
 				$gt: 1000
 			}
-		}, {
+        }
+        ,
+        {
 			user: 'albertobasalo@agorabinaria.com'
 		}
 	]

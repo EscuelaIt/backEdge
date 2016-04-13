@@ -46,3 +46,24 @@ mongo
 robomongo
 
 
+#esquemas n a m
+
+facturas
+
+facturas_productos
+
+productos
+
+
+
+Facturas :[ { _id, fecha, productos:[{des, pu, uds}] },{}]
+
+Productos : [{_id, desc, facturas :[{},{}]}]
+
+Facturas :[ { _id, fecha, productos:[ producto_id, producto_id] },{}]
+Productos : [{_id, desc, pvp},{}]
+
+
+
+Libros:
+Autores: 

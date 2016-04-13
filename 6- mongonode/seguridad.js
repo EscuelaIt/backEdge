@@ -6,7 +6,7 @@ const jwt = require('./jwt')
 module.exports = {
     usarSeguridad: usarSeguridad,
     existeUsuario: existeUsuario,
-    crearUsuario: crearUsuario,
+    crearUsuario: creandoUsuario,
     esUsuarioValido: esUsuarioValido,
     nuevaSesion: (usuario) => jwt.generaToken(usuario)
 }
@@ -16,7 +16,6 @@ function usarSeguridad(app, ruta) {
         let sessionId = req.get('sessionId')
         let sesion = jwt.verify(sessionId)
         if (sesion) {
-            sesion.timeStamp = new Date()
             req.usuario = sesion.email
             next()
         } else {
@@ -30,7 +29,7 @@ function existeUsuario(usuario) {
     return mongodb.finding(colName, { email: usuario.email })
 }
 
-function crearUsuario(usuario) {
+function creandoUsuario(usuario) {
     return mongodb.inserting(colName, usuario)
 }
 
