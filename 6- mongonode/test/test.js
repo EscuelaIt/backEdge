@@ -4,7 +4,7 @@ var request = require('supertest')
 request = request('http://localhost:3030')
 
 // llamadas públicas
-//require('./maestros').test(request)
+require('./maestros').test(request)
 
 
 // llamadas de autenticación
@@ -14,4 +14,4 @@ require('./usuarios').test(request)
 
 // llamadas privadas
 require('./movimientos').test(request)
-//require('./saldos').test(request)
+require('./saldos').test(request)

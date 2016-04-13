@@ -17,21 +17,17 @@ module.exports.test = (req) => {
         })
         it('GET respond with 401 unauthorized to non authenticated users',
             (done) => req.get(url).expect(401, done))
-        it('GET respond with 200 ok to an authenticated user', (done) => {
+        it('GET respond with 204 ok to an authenticated user', (done) => {
             req
                 .get(url)
                 .set('sessionId', sessionId)
-                .expect(200, done)
+                .expect(204, done)
         })
         it('GET respond with a correct cero json value', (done) => {
             req
                 .get(url)
                 .set('sessionId', sessionId)
-                .expect({
-                    ingresos: 0,
-                    gastos: 0,
-                    balance: 0
-                }, done)
+                .expect({}, done)
         })
         it('GET respond with a correct non cero json value', (done) => {
             req
@@ -42,11 +38,7 @@ module.exports.test = (req) => {
                     req
                         .get(url)
                         .set('sessionId', sessionId)
-                        .expect({
-                            ingresos: 199,
-                            gastos: 0,
-                            balance: 199
-                        }, done)
+                        .expect([{ _id: { esIngreso: 1 }, total: 199 }], done)
                 })
         })
     })

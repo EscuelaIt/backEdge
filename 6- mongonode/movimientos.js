@@ -31,11 +31,11 @@ module.exports = (app, rutaMovimientos, rutaSaldos) => {
     app.route(`${rutaMovimientos}/:id`)
         .get((req, res) => {
             mongodb.finding(colName, { usuario: req.usuario }, req.params.id)
-                .then(result => result.length>0 ? res.json(result) : res.status(404).send())
+                .then(result => result.length > 0 ? res.json(result) : res.status(404).send())
                 .catch(err => resError(err, res))
         }).put((req, res) => {
             mongodb.updating(colName, { usuario: req.usuario }, req.params.id, req.body)
-                .then(result => result.result.n > 0 ? res.status(200).json(result) : res.status(404).send() )
+                .then(result => result.result.n > 0 ? res.status(200).json(result) : res.status(404).send())
                 .catch(err => resError(err, res))
 
         }).delete((req, res) => {
@@ -47,36 +47,27 @@ module.exports = (app, rutaMovimientos, rutaSaldos) => {
     // si la ruta es simple, se puede mantener el verbo original
     // Manteniendo la Precedencia
     // api/priv/saldos
-    app.get(rutaSaldos, (peticion, respuesta) => {
-        let totales = {
-            ingresos: 0,
-            gastos: 0,
-            balance: 0
-        }
-        if (movimientos && movimientos.length > 0) {
-            movimientos.forEach((movimiento) => {
-                if (movimiento.usuario == peticion.usuario) {
-                    if (movimiento.esIngreso) {
-                        totales.ingresos += movimiento.importe
-                    } else {
-                        totales.gastos += movimiento.importe
+    app.get(rutaSaldos, (req, res) => {
+        // Las consultas más complejas se resuelven con el framework de agregación
+        var query = [
+            {
+                $match: {
+                    usuario: req.usuario
+                }
+            },
+            {
+                $group: {
+                    _id: {
+                        esIngreso: '$esIngreso'
+                    },
+                    total: {
+                        $sum: '$importe'
                     }
                 }
-            })
-            totales.balance = totales.ingresos - totales.gastos
-            respuesta.json(totales)
-        } else {
-            respuesta.status(200).json({
-                ingresos: 0,
-                gastos: 0,
-                balance: 0
-            })
-        }
+            }
+        ]
+        mongodb.aggregating(colName, query)
+            .then(result => result.length > 0 ? res.json(result) : res.status(204).send())
+            .catch(err => resError(err, res))
     })
-
-    function getMovimientoUsuario(id, usuario) {
-        return movimientos.filter(m => m.usuario == usuario && m.id == id)
-    }
-
-
 }

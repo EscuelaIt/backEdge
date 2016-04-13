@@ -5,7 +5,7 @@
 			"name": "Launch",
 			"type": "node",
 			"request": "launch",
-			"program": "${workspaceRoot}/5- mongodb/index.js",
+			"program": "${workspaceRoot}/6- mongonode/index.js",
 			"stopOnEntry": false,
 			"args": [],
 			"cwd": "${workspaceRoot}",
