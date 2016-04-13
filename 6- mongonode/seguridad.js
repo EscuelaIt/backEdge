@@ -14,19 +14,12 @@ module.exports = {
 function usarSeguridad(app, ruta) {
     app.use(ruta, (req, res, next) => {
         let sessionId = req.get('sessionId')
-        if(sessionId === undefined) return res.status(401).send('Credencial inválida')
-        try {
-            let sesion = jwt.verify(sessionId)
-            if (sesion) {
-                sesion.timeStamp = new Date()
-                req.usuario = sesion.email
-                next()
-            } else {
-                res.status(401).send('Credencial inválida')
-            }
-        }
-        catch (err) {
-            console.error(err)
+        let sesion = jwt.verify(sessionId)
+        if (sesion) {
+            sesion.timeStamp = new Date()
+            req.usuario = sesion.email
+            next()
+        } else {
             res.status(401).send('Credencial inválida')
         }
     })
